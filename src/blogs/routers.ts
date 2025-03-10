@@ -1,14 +1,12 @@
 
 import { Router } from 'express';
-import { blogValidators } from './validators';
+import {blogValidators, postForSpecificBlogValidators} from './validators';
 import { authMiddleware } from '../common/authMiddleware';
 import { inputCheckErrorsMiddleware } from '../common/validationMiddleware';
 import { blogRepository } from './blogRepository';
 import { blogQueryRepository } from './blogQueryRepository';
 import {postQueryRepository} from "../posts/postQueryRepository";
-import {postValidators} from "../posts/validators";
 import {postRepository} from "../posts/postRepository";
-import {postForSpecificBlogValidators} from "../posts/validatorsForBlogPosts";
 
 export const blogsRouter = Router();
 
@@ -50,9 +48,7 @@ blogsRouter.delete('/:id',
     }
 );
 
-// Новый эндпоинт: GET /blogs/:id/posts – получение постов для конкретного блога
 blogsRouter.get('/:id/posts', async (req, res) => {
-    // Проверяем, существует ли блог
     const blog = await blogRepository.getById(req.params.id);
     if (!blog) {
         res.sendStatus(404);
@@ -62,20 +58,17 @@ blogsRouter.get('/:id/posts', async (req, res) => {
     res.status(200).json(result);
 });
 
-// Новый эндпоинт: POST /blogs/:id/posts – создание поста для конкретного блога
+
 blogsRouter.post('/:id/posts',
     authMiddleware,
-    // Валидаторы для полей поста (title, shortDescription, content)
     ...postForSpecificBlogValidators,
     inputCheckErrorsMiddleware,
     async (req, res) => {
-        // Проверяем, существует ли блог
         const blog = await blogRepository.getById(req.params.id);
         if (!blog) {
             res.sendStatus(404);
             return;
         }
-        // Объединяем blogId из параметров с телом запроса
         const postInput = { ...req.body, blogId: req.params.id };
         const newPost = await postRepository.create(postInput);
         newPost ? res.status(201).json(newPost) : res.sendStatus(400);

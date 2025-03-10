@@ -6,7 +6,7 @@ import { getPaginationParams } from '../common/helpers';
 export const postQueryRepository = {
     async getPosts(query: any): Promise<any> {
         const { pageNumber, pageSize, sortBy, sortDirection } = getPaginationParams(query);
-        const filter = {}; // общий фильтр для всех постов
+        const filter = {};
 
         const totalCount = await postCollection.countDocuments(filter);
         const pagesCount = Math.ceil(totalCount / pageSize);
@@ -27,8 +27,7 @@ export const postQueryRepository = {
 
     async getPostsByBlogId(blogId: string, query: any): Promise<any> {
         const { pageNumber, pageSize, sortBy, sortDirection } = getPaginationParams(query);
-        const filter = { blogId }; // фильтруем по конкретному blogId
-
+        const filter = { blogId };
         const totalCount = await postCollection.countDocuments(filter);
         const pagesCount = Math.ceil(totalCount / pageSize);
         const items = await postCollection.find(filter)
