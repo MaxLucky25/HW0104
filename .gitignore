@@ -1,0 +1,7 @@
+.idea
+__tests__
+dist
+node_modules
+jest.config.js
+jest.setup.ts
+.env
