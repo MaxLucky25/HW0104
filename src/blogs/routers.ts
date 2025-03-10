@@ -8,6 +8,7 @@ import { blogQueryRepository } from './blogQueryRepository';
 import {postQueryRepository} from "../posts/postQueryRepository";
 import {postValidators} from "../posts/validators";
 import {postRepository} from "../posts/postRepository";
+import {postForSpecificBlogValidators} from "../posts/validatorsForBlogPosts";
 
 export const blogsRouter = Router();
 
@@ -65,7 +66,7 @@ blogsRouter.get('/:id/posts', async (req, res) => {
 blogsRouter.post('/:id/posts',
     authMiddleware,
     // Валидаторы для полей поста (title, shortDescription, content)
-    ...postValidators,
+    ...postForSpecificBlogValidators,
     inputCheckErrorsMiddleware,
     async (req, res) => {
         // Проверяем, существует ли блог
