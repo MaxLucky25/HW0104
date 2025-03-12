@@ -1,12 +1,13 @@
 
 import { Router } from 'express';
-import {blogValidators, postForSpecificBlogValidators} from '../validators/BlogValidators';
+import {blogValidators} from '../validators/BlogValidators';
 import { authMiddleware } from '../middlewaries/authMiddleware';
 import { inputCheckErrorsMiddleware } from '../middlewaries/validationMiddleware';
 import { blogRepository } from '../repositories/blogRepository';
 import { blogQueryRepository } from '../repositories/blogQueryRepository';
 import {postQueryRepository} from "../repositories/postQueryRepository";
 import {postRepository} from "../repositories/postRepository";
+import {postForSpecificBlogValidators} from "../validators/postForSpecificBlogValidators";
 
 export const blogsRouter = Router();
 
