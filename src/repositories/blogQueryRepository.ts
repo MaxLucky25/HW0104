@@ -1,6 +1,6 @@
 
 import { blogCollection } from '../db/mongo-db';
-import { BlogViewModel } from './models';
+import { BlogViewModel } from '../models/blogModels';
 import { getPaginationParams } from '../common/helpers';
 
 export const blogQueryRepository = {

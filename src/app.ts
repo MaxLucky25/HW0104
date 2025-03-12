@@ -1,7 +1,7 @@
 import express from 'express';
-import { blogsRouter } from './blogs/routers';
-import { postsRouter } from './posts/routers';
-import { testingRouter } from './testing/router';
+import { blogsRouter } from './routers/blogRouters';
+import { postsRouter } from './routers/postRouters';
+import { testingRouter } from './routers/testingRouter';
 import cors from 'cors';
 
 

@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { postValidators } from './validators';
-import { authMiddleware } from '../common/authMiddleware';
-import { inputCheckErrorsMiddleware } from '../common/validationMiddleware';
-import { postRepository } from './postRepository';
-import { postQueryRepository } from './postQueryRepository';
+import { postValidators } from '../validators/postValidators';
+import { authMiddleware } from '../middlewaries/authMiddleware';
+import { inputCheckErrorsMiddleware } from '../middlewaries/validationMiddleware';
+import { postRepository } from '../repositories/postRepository';
+import { postQueryRepository } from '../repositories/postQueryRepository';
 
 export const postsRouter = Router();
 

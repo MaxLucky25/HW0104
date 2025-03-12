@@ -1,5 +1,5 @@
 
-import { BlogDBType, BlogInputModel, BlogViewModel } from './models';
+import { BlogDBType, BlogInputModel, BlogViewModel } from '../models/blogModels';
 import {blogCollection} from "../db/mongo-db";
 
 export const blogRepository = {
