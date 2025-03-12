@@ -1,7 +1,7 @@
 
 import { postCollection } from '../db/mongo-db';
 import { PostViewModel } from '../models/postModels';
-import { getPaginationParams } from '../common/helpers';
+import { getPaginationParams } from '../utility/pagination';
 
 export const postQueryRepository = {
     async getPosts(query: any): Promise<any> {

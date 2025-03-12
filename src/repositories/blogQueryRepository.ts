@@ -1,7 +1,7 @@
 
 import { blogCollection } from '../db/mongo-db';
 import { BlogViewModel } from '../models/blogModels';
-import { getPaginationParams } from '../common/helpers';
+import { getPaginationParams } from '../utility/pagination';
 
 export const blogQueryRepository = {
     async getBlogs(query: any): Promise<any> {
