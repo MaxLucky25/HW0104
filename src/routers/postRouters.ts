@@ -4,16 +4,17 @@ import { authMiddleware } from '../middlewaries/authMiddleware';
 import { inputCheckErrorsMiddleware } from '../middlewaries/validationMiddleware';
 import { postRepository } from '../repositories/postRepository';
 import { postQueryRepository } from '../repositories/postQueryRepository';
+import {postService} from "../services/postService";
 
 export const postsRouter = Router();
 
 postsRouter.get('/', async (req, res) => {
-    const result = await postQueryRepository.getPosts(req.query);
+    const result = await postService.getAllPosts(req.query);
     res.status(200).json(result);
 });
 
 postsRouter.get('/:id', async (req, res) => {
-    const post = await postRepository.getById(req.params.id);
+    const post = await postService.getPostById(req.params.id);
     post ? res.json(post) : res.sendStatus(404);
 });
 
@@ -22,7 +23,7 @@ postsRouter.post('/',
     ...postValidators,
     inputCheckErrorsMiddleware,
     async (req, res) => {
-        const newPost = await postRepository.create(req.body);
+        const newPost = await postService.createPost(req.body);
         newPost ? res.status(201).json(newPost) : res.sendStatus(400);
     }
 );
@@ -32,7 +33,7 @@ postsRouter.put('/:id',
     ...postValidators,
     inputCheckErrorsMiddleware,
     async (req, res) => {
-        const updated = await postRepository.update(req.params.id, req.body);
+        const updated = await postService.updatePost(req.params.id, req.body);
         updated ? res.sendStatus(204) : res.sendStatus(404);
     }
 );
@@ -40,7 +41,7 @@ postsRouter.put('/:id',
 postsRouter.delete('/:id',
     authMiddleware,
     async (req, res) => {
-        const deleted = await postRepository.delete(req.params.id);
+        const deleted = await postService.deletePost(req.params.id);
         deleted ? res.sendStatus(204) : res.sendStatus(404);
     }
 );

@@ -12,4 +12,5 @@ export type BlogDBType = {
 
 export type BlogViewModel = Omit<BlogDBType, '_id'>;
 
-export type BlogInputModel = Pick<BlogDBType, 'name' | 'description' | 'websiteUrl'>;
+export type CreateBlogDto = Pick<BlogDBType, 'name' | 'description' | 'websiteUrl'>;
+export type UpdateBlogDto = Pick<BlogDBType, 'name' | 'description' | 'websiteUrl'>;

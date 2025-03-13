@@ -12,6 +12,7 @@ export let postCollection: Collection<PostDBType>;
 
 const mongoURI = process.env.MONGO_URL || "mongodb://0.0.0.0:27017";
 const dbName = 'Cluster0103';
+
 const client = new MongoClient(mongoURI, {
     serverSelectionTimeoutMS: 15000,
     tls: true,

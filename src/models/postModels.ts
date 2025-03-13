@@ -13,4 +13,5 @@ export type PostDBType = {
 
 export type PostViewModel =Omit<PostDBType, '_id'>;
 
-export type PostInputModel = Pick<PostDBType, 'title' | 'shortDescription' | 'content' | 'blogId'>;
+export type CreatePostDto = Pick<PostDBType, 'title' | 'shortDescription' | 'content' | 'blogId'>;
+export type UpdatePostDto = Pick<PostDBType, 'title' | 'shortDescription' | 'content' | 'blogId'>;

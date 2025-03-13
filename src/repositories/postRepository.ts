@@ -1,15 +1,18 @@
-import { PostDBType, PostInputModel, PostViewModel } from '../models/postModels';
+import { PostDBType, CreatePostDto, UpdatePostDto, PostViewModel } from '../models/postModels';
 import { blogRepository } from './blogRepository';
 import {postCollection} from "../db/mongo-db";
 
 export const postRepository = {
 
-    async getAll(): Promise<PostViewModel[]> {
-        const posts = await postCollection.find().toArray();
-        return posts.map(this.mapToOutput);
+    async getById(id: string): Promise<PostViewModel | null> {
+        const post = await postCollection.findOne(
+            {id:id},
+            {projection: {_id: 0} }
+        );
+        return post as PostViewModel | null;
     },
 
-    async create(input: PostInputModel): Promise<PostViewModel | null> {
+    async create(input:  CreatePostDto): Promise<PostViewModel | null> {
         const blog = await blogRepository.getById(input.blogId);
         if (!blog) return null;
 
@@ -28,15 +31,7 @@ export const postRepository = {
         return this.mapToOutput(created!);
     },
 
-    async getById(id: string): Promise<PostViewModel | null> {
-        const post = await postCollection.findOne(
-            {id:id},
-            {projection: {_id: 0} }
-        );
-        return post as PostViewModel | null;
-    },
-
-    async update(id: string, input: PostInputModel): Promise<boolean> {
+    async update(id: string, input: UpdatePostDto): Promise<boolean> {
         const blog = await blogRepository.getById(input.blogId);
         if (!blog) return false;
 

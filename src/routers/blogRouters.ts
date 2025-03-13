@@ -1,23 +1,20 @@
 
 import { Router } from 'express';
-import {blogValidators} from '../validators/BlogValidators';
+import {blogValidators} from '../validators/blogValidators';
 import { authMiddleware } from '../middlewaries/authMiddleware';
 import { inputCheckErrorsMiddleware } from '../middlewaries/validationMiddleware';
-import { blogRepository } from '../repositories/blogRepository';
-import { blogQueryRepository } from '../repositories/blogQueryRepository';
-import {postQueryRepository} from "../repositories/postQueryRepository";
-import {postRepository} from "../repositories/postRepository";
 import {postForSpecificBlogValidators} from "../validators/postForSpecificBlogValidators";
+import {blogService} from "../services/blogService";
 
 export const blogsRouter = Router();
 
 blogsRouter.get('/', async (req, res) => {
-    const result = await blogQueryRepository.getBlogs(req.query);
+    const result = await blogService.getAllBlogs(req.query);
     res.status(200).json(result);
 });
 
 blogsRouter.get('/:id', async (req, res) => {
-    const blog = await blogRepository.getById(req.params.id);
+    const blog = await blogService.getBlogBYId(req.params.id);
     blog ? res.json(blog) : res.sendStatus(404);
 });
 
@@ -26,7 +23,7 @@ blogsRouter.post('/',
     ...blogValidators,
     inputCheckErrorsMiddleware,
     async (req, res) => {
-        const newBlog = await blogRepository.create(req.body);
+        const newBlog = await blogService.createBlog(req.body);
         res.status(201).json(newBlog);
     }
 );
@@ -36,7 +33,7 @@ blogsRouter.put('/:id',
     ...blogValidators,
     inputCheckErrorsMiddleware,
     async (req, res) => {
-        const updated = await blogRepository.update(req.params.id, req.body);
+        const updated = await blogService.updateBlog(req.params.id, req.body);
         updated ? res.sendStatus(204) : res.sendStatus(404);
     }
 );
@@ -44,18 +41,18 @@ blogsRouter.put('/:id',
 blogsRouter.delete('/:id',
     authMiddleware,
     async (req, res) => {
-        const deleted = await blogRepository.delete(req.params.id);
+        const deleted = await blogService.deleteBlog(req.params.id);
         deleted ? res.sendStatus(204) : res.sendStatus(404);
     }
 );
 
 blogsRouter.get('/:id/posts', async (req, res) => {
-    const blog = await blogRepository.getById(req.params.id);
+    const blog = await blogService.getBlogBYId(req.params.id);
     if (!blog) {
         res.sendStatus(404);
         return;
     }
-    const result = await postQueryRepository.getPostsByBlogId(req.params.id, req.query);
+    const result = await blogService.getPostsForBlog(req.params.id, req.query);
     res.status(200).json(result);
 });
 
@@ -65,13 +62,12 @@ blogsRouter.post('/:id/posts',
     ...postForSpecificBlogValidators,
     inputCheckErrorsMiddleware,
     async (req, res) => {
-        const blog = await blogRepository.getById(req.params.id);
+        const blog = await blogService.getBlogBYId(req.params.id);
         if (!blog) {
             res.sendStatus(404);
             return;
         }
-        const postInput = { ...req.body, blogId: req.params.id };
-        const newPost = await postRepository.create(postInput);
+        const newPost = await blogService.createPostsForBlog(req.params.id, req.body);
         newPost ? res.status(201).json(newPost) : res.sendStatus(400);
     }
 );
